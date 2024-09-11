@@ -1,6 +1,25 @@
 let playerScore = 0;
 let computerScore = 0;
 
+//creating buttons for the UI (implementing defer in the index.html is key to make this work)
+let btnRock = document.createElement("button");
+btnRock.textContent = "Rock";
+
+let btnPaper = document.createElement("button");
+btnPaper.textContent = "Paper";
+
+let btnScissor = document.createElement("button");
+btnScissor.textContent = "Scissor";
+
+document.body.appendChild(btnRock);
+document.body.appendChild(btnPaper);
+document.body.appendChild(btnScissor);
+
+let resultContainer = document.createElement('div');
+document.body.appendChild(resultContainer);
+
+
+
 // function to get a random value from rock, paper or scissor
 function getComputerChoice() {
     const randomValue = Math.random() * 3;
@@ -19,43 +38,27 @@ function getComputerChoice() {
 
 // function to play a round 
 function playRound(computerChoice, playerChoice) {
-    
-    const winConditions = {  // this object is using string keys to represent different choices (e.g., 'CARTA', 'FORBICE', 'SASSO') and assigning their corresponding winning choices as values.
+  
+    if (playerScore == 5 || computerScore ==  5){ return `GAME OVER! FINAL SCORE. PLAYER:  ${playerScore} COMPUTER: ${computerScore}`;}
+    const winConditions = {  // this object is using string keys to represent different choices (e.g., 'PAPER', 'SCISSOR', 'ROCK') and assigning their corresponding winning choices as values.
         'PAPER': 'SCISSOR',
         'SCISSOR': 'ROCK',
         'ROCK': 'PAPER'
     };
 
-    playerChoice = playerChoice.toUpperCase();
-
     if (computerChoice === playerChoice) {
-        return "TIES. REPLAY";
+        return `TIES. REPLAY. | Player Score:  ${playerScore}  Computer Score:  ${computerScore}`;
     }
 
     if (winConditions[computerChoice] === playerChoice) {
-        return ++playerScore,`YOU WIN! ${playerChoice} BEATS ${computerChoice}`; }
+        
+        return ++playerScore,`YOU WIN! ${playerChoice} BEATS ${computerChoice} | Player Score:  ${playerScore}  Computer Score:  ${computerScore}`; }
 
-    else {return ++computerScore, `YOU LOSE! ${computerChoice} BEATS ${playerChoice}`;}
+    else { return ++computerScore, `YOU LOSE! ${computerChoice} BEATS ${playerChoice} | Player Score:  ${playerScore}  Computer Score:  ${computerScore}`;}
 }
+   
 
-//funchtion to play a game best of five that keeps the score and reports the winner and loser at the end
-function game(){
-    let roundCounter = 1;
-    const choices = ['ROCK', 'PAPER', 'SCISSOR'];
 
-   while(playerScore < 3 && computerScore < 3){
-    
-    console.log("Round :" + roundCounter);
-
-    let playerSelection = window.prompt(`Choose one:\n${choices.join('\n')}`);
-    let computerSelection = getComputerChoice();
-
-    console.log("YOU CHOOSE: " + playerSelection);
-    console.log("COMPUTER CHOOSES: " + computerSelection);
-    console.log(playRound(computerSelection, playerSelection));
-    console.log("COMPUTER SCORE: " + computerScore + " | " + "PLAYER SCORE: " + playerScore);
-    roundCounter++;
-   }
-}
-    
-game();
+btnRock.addEventListener('click', function(){resultContainer.textContent=(playRound(getComputerChoice(), "ROCK"));});
+btnPaper.addEventListener('click', function(){resultContainer.textContent=(playRound(getComputerChoice(), "PAPER"));});
+btnScissor.addEventListener('click', function(){resultContainer.textContent=(playRound(getComputerChoice(), "SCISSOR"));});
